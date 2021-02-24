@@ -28,10 +28,16 @@ const searchHandlerFactory = (
                 body: badRequestResponseConverter(validate.errors)
             }
         }
+
+        const validatedParams = {
+            name: queryParameters.name,
+            page: Number(queryParameters.page) || undefined,
+            perPage: Number(queryParameters.perPage) || undefined
+        }
+
         let response;
         try {
-            // Todo change limit and fix type
-            response = await searchService.searchByUsername(queryParameters as any);
+            response = await searchService.searchByUsername(validatedParams);
         } catch (error) {
             return {
                 statusCode: 500,

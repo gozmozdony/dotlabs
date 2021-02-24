@@ -5,8 +5,11 @@ export type SearchResult = {
 
 export type User = {
     name: string;
+    email: string;
+    username: string;
     followers: number;
     following: number;
+    publicRepos: number;
     profilePic: string;
     url: string;
 }

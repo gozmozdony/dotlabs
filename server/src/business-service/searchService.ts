@@ -14,9 +14,16 @@ const SearchServiceFactory = (octokit: Octokit): ISearchService => {
                 per_page: queryParameters.perPage,
                 page: queryParameters.page,
             });
+
+            const userRecords = await Promise.all(results.data.items.map(async (record) => (
+                await octokit.users.getByUsername({
+                    username: record.login
+                })).data
+            ));
+
             return {
                 totalCount: results.data.total_count,
-                items: dataResponseConverter(results.data.items)
+                items: dataResponseConverter(userRecords)
             } ;
         }
     }

@@ -1,7 +1,7 @@
 import Ajv from "ajv";
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyEventQueryStringParameters } from "aws-lambda";
 
-import {ISearchService} from "../../src/business-service/searchService";
+import { ISearchService } from "../../src/business-service/searchService";
 import searchHandlerFactory from "../../src/handlers/searchHandler";
 
 describe('Search Handler', () => {
@@ -36,6 +36,7 @@ describe('Search Handler', () => {
             expect(mockSearchByUsername).toBeCalledWith(queryStringParameters);
             expect(result).toEqual(expected);
         });
+
         it('Should return with status OK and empty array of results with multiple param', async () => {
             const expected = {
                 statusCode: 200,
@@ -48,8 +49,8 @@ describe('Search Handler', () => {
             };
             const queryStringParameters = {
                 name: 'gozmozdony',
-                page: 1,
-                perPage: 1
+                page: '1',
+                perPage: '1'
             } as any;
             mockSearchByUsername.mockResolvedValue({
                 totalCount: 0,
@@ -58,7 +59,11 @@ describe('Search Handler', () => {
             const result = await searchHandlerFactory(mockSearchService, validator)({
                 queryStringParameters
             } as APIGatewayProxyEvent);
-            expect(mockSearchByUsername).toBeCalledWith(queryStringParameters);
+            expect(mockSearchByUsername).toBeCalledWith({
+                ...queryStringParameters,
+                page: Number(queryStringParameters.page),
+                perPage: Number(queryStringParameters.perPage),
+            });
             expect(result).toEqual(expected);
         });
 
@@ -87,6 +92,38 @@ describe('Search Handler', () => {
             });
             const result = await searchHandlerFactory(mockSearchService, validator)({
                 queryStringParameters: {}
+            } as APIGatewayProxyEvent);
+            expect(mockSearchByUsername).not.toBeCalled();
+            expect(result).toEqual(expected);
+        });
+
+        it('Should return with bad request when param is contains non word character', async () => {
+            const expected = {
+                statusCode: 400,
+                body: JSON.stringify({
+                    status: 400,
+                    message: 'Bad Request',
+                    description: [
+                        {
+                            keyword: 'pattern',
+                            dataPath: '/name',
+                            schemaPath: '#/properties/name/pattern',
+                            params: { pattern: '^[a-zA-Z0-9_ .]*$' },
+                            message: 'should match pattern "^[a-zA-Z0-9_ .]*$"'
+                        }
+                    ]
+                })
+            };
+
+
+            mockSearchByUsername.mockResolvedValue({
+                total_count: 0,
+                items: []
+            });
+            const result = await searchHandlerFactory(mockSearchService, validator)({
+                queryStringParameters: {
+                    name: "<hello>"
+                } as APIGatewayProxyEventQueryStringParameters
             } as APIGatewayProxyEvent);
             expect(mockSearchByUsername).not.toBeCalled();
             expect(result).toEqual(expected);

@@ -11,6 +11,11 @@ Parameters:
     Type: String
     Default: 'dotlabs-proxy'
 Globals:
+  Api:
+    # enable CORS;
+    Cors:
+      AllowHeaders: "'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization'"
+      AllowOrigin: "'*'"
   Function:
     Runtime: nodejs12.x
     Timeout: 10
@@ -19,7 +24,13 @@ Globals:
       Variables:
         AUTH_TOKEN: !Ref authToken
         USER_AGENT: !Ref userAgent
+
 Resources:
+  DotlabsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+
   searcFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -27,13 +38,14 @@ Resources:
       Handler: 'index.searchHandler'
       Description: Search proxy handler
       Events:
-        Api:
+        Search:
           Type: Api
           Properties:
-            Path: /
+            Path: /v1/github-service/search
             Method: GET
+            RestApiId: !Ref DotlabsApi
 
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub "https://${DotlabsApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

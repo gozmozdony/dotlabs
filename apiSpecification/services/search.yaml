@@ -97,9 +97,12 @@ components:
       status: 200
       message: 'OK'
       items:
-        - name: "gozmozdony"
+        - name: 'Gyula Szakacs'
+          email: 'szakgyuwork@gmail.com'
+          username: 'gozmozdony'
           followers: 0
           following: 0
+          publicRepos: 1
           profilePic: 'https://avatars.githubusercontent.com/u/5528598?v=4'
           url: 'https://github.com/gozmozdony'
     Error400.InvalidRequestId:
@@ -178,6 +181,12 @@ components:
                 properties:
                   name:
                     type: string
+                    example: 'Gyula Szakacs'
+                  email:
+                    type: string
+                    example: 'szakgyuwork@gmail.com'
+                  username:
+                    type: string
                     example: 'gozmozdony'
                   followers:
                     type: number
@@ -185,6 +194,9 @@ components:
                   following:
                     type: number
                     example: 0
+                  publicRepos:
+                    type: number
+                    example: 1
                   profilePic:
                     type: string
                     example: 'https://avatars.githubusercontent.com/u/5528598?v=4'
