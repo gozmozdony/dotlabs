@@ -19,7 +19,24 @@ To check the current API Specification run the following commands inside the api
 `yarn run api`
 
 ## Server 
-### TBD
+### PreRequisites
+- AWS Trial account
+- SAM CLI
+- SAM credentials configured
+- S3 bucket
+### Commands
+#### Test
+Run tests
+
+`yarn run test`
+#### Build
+Build the code
+
+`yarn run test`
+#### Package
+Package the code into an artifact and push to an S3 bucket
+#### Deploy
+Deploy the IaC and create/update services
 ## Client
 ### TBD
 

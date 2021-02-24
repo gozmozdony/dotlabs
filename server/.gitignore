@@ -1,0 +1,6 @@
+dist/
+coverage/
+junit.xml
+yarn.lock
+yarn-error.log
+node_modules/

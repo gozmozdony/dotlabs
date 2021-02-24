@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: dotlabs-proxy-app
+Transform:
+- AWS::Serverless-2016-10-31
+Parameters:
+  authToken:
+    Description: Token for usage
+    Type: String
+  userAgent:
+    Description: Name of the user agent
+    Type: String
+    Default: 'dotlabs-proxy'
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 10
+    MemorySize: 128
+    Environment:
+      Variables:
+        AUTH_TOKEN: !Ref authToken
+        USER_AGENT: !Ref userAgent
+Resources:
+  searcFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: './dist'
+      Handler: 'index.searchHandler'
+      Description: Search proxy handler
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

@@ -14,8 +14,8 @@ paths:
   /search:
     parameters:
       - $ref: '#/components/parameters/Query.Search.Name'
-      - $ref: '#/components/parameters/Query.Pagination.Limit'
-      - $ref: '#/components/parameters/Query.Pagination.Offset'
+      - $ref: '#/components/parameters/Query.Pagination.Page'
+      - $ref: '#/components/parameters/Query.Pagination.PerPage'
     get:
       tags:
         - public
@@ -48,10 +48,10 @@ paths:
                   $ref: '#/components/examples/Search.Error400.MissingNameQuery'
                 Invalid name query param:
                   $ref: '#/components/examples/Search.Error400.InvalidNameQuery'
-                Invalid offset query param:
-                  $ref: '#/components/examples/Search.Error400.InvalidOffsetQuery'
-                Invalid limit query param:
-                  $ref: '#/components/examples/Search.Error400.InvalidLimitQuery'
+                Invalid page query param:
+                  $ref: '#/components/examples/Search.Error400.InvalidPageQuery'
+                Invalid per page query param:
+                  $ref: '#/components/examples/Search.Error400.InvalidPerPageQuery'
         403:
           description: The server understood the request, but is refusing to authorize it.
           content:
@@ -79,15 +79,15 @@ components:
       schema:
         type: integer
       description: The name of the user
-    Query.Pagination.Offset:
+    Query.Pagination.Page:
       in: query
-      name: offset
+      name: page
       schema:
         type: integer
-      description: The number of items to skip before starting to collect the result set
-    Query.Pagination.Limit:
+      description: The number of pages to skip before starting to collect the result set
+    Query.Pagination.PerPage:
       in: query
-      name: limit
+      name: perPage
       schema:
         type: integer
       description: The numbers of items to return
@@ -96,7 +96,7 @@ components:
     Response.Search:
       status: 200
       message: 'OK'
-      results:
+      items:
         - name: "gozmozdony"
           followers: 0
           following: 0
@@ -122,14 +122,14 @@ components:
       status: 400
       message: Bad Request
       description: 'Invalid request name query format'
-    Search.Error400.InvalidOffsetQuery:
+    Search.Error400.InvalidPerPageQuery:
       status: 400
       message: Bad Request
-      description: 'Invalid request offset query format'
-    Search.Error400.InvalidLimitQuery:
+      description: 'Invalid request per page query format'
+    Search.Error400.InvalidPageQuery:
       status: 400
       message: Bad Request
-      description: 'Invalid request limit query format'
+      description: 'Invalid request page query format'
   schemas:
     Response.Success:
       type: object
@@ -167,7 +167,10 @@ components:
     Response.Search:
       type: object
       properties:
-        results:
+        totalCount:
+          type: number
+          example: 1
+        items:
           type: array
           items:
             allOf:
