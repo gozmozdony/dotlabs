@@ -3,6 +3,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyEventQueryStringParameters } from 
 
 import { ISearchService } from "../../src/business-service/searchService";
 import searchHandlerFactory from "../../src/handlers/searchHandler";
+import {MAX_NUMBER_PER_PAGE} from "../../src/constants/environment";
 
 describe('Search Handler', () => {
     const validator = new Ajv();
@@ -84,14 +85,29 @@ describe('Search Handler', () => {
                     ]
                 })
             };
-
-
-            mockSearchByUsername.mockResolvedValue({
-                total_count: 0,
-                items: []
-            });
             const result = await searchHandlerFactory(mockSearchService, validator)({
                 queryStringParameters: {}
+            } as APIGatewayProxyEvent);
+            expect(mockSearchByUsername).not.toBeCalled();
+            expect(result).toEqual(expected);
+        });
+
+        it('Should return with bad request when per page number is bigger than allowed', async () => {
+            const expected = {
+                statusCode: 400,
+                body: JSON.stringify({
+                    status: 400,
+                    message: 'Bad Request',
+                    description: `The maximum number for per page param is ${MAX_NUMBER_PER_PAGE}`
+                })
+            };
+            const queryStringParameters = {
+                name: 'gozmozdony',
+                perPage: '26'
+            } as any;
+
+            const result = await searchHandlerFactory(mockSearchService, validator)({
+                queryStringParameters
             } as APIGatewayProxyEvent);
             expect(mockSearchByUsername).not.toBeCalled();
             expect(result).toEqual(expected);

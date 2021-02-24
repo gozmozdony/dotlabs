@@ -26,7 +26,7 @@ describe('Search Business Service test', () => {
     });
 
     describe('search by username', () => {
-        it('After calling with one param, should return with results', async () => {
+        it('Should return with results when calling with one param', async () => {
             const exampleData = {
                 total_count: 1,
                 incomplete_results: false,
@@ -49,7 +49,34 @@ describe('Search Business Service test', () => {
             });
         });
 
-        it('After calling with multiple param, should return with results', async () => {
+        it('Should return with results when calling with multiple params', async () => {
+            const exampleData = {
+                total_count: 1,
+                incomplete_results: false,
+                items: [
+                    searchResultExample
+                ]
+            };
+            const queryParams = { name: 'gozmozdony', page: 1, perPage: 1};
+            mockSearchFn.mockResolvedValue({
+                data: exampleData
+            });
+            mockGetByUsernameFn.mockResolvedValue({ data: userResultExample });
+
+            const result = await service.searchByUsername(queryParams);
+            expect(mockSearchFn).toBeCalledWith({
+                q: queryParams.name,
+                page: queryParams.page,
+                per_page: queryParams.perPage
+            });
+            expect(mockGetByUsernameFn).toBeCalledWith({username: queryParams.name});
+            expect(result).toEqual({
+                totalCount: exampleData.total_count,
+                items: dataResponseConverter([userResultExample])
+            });
+        });
+
+        it('Should return with results when fetching more than one record', async () => {
             const searchResultExample2 = {
                 ...searchResultExample,
                 name: 'gozmozdony2'
@@ -130,7 +157,7 @@ describe('Search Business Service test', () => {
             }
         });
 
-        it('Should return with null result', async () => {
+        it('Should return with empty result and not call user fetching', async () => {
             const exampleData = {
                 total_count: 0,
                 incomplete_results: false,
@@ -143,6 +170,7 @@ describe('Search Business Service test', () => {
 
             const result = await service.searchByUsername(queryParams);
             expect(mockSearchFn).toBeCalledWith({q: queryParams.name});
+            expect(mockGetByUsernameFn).not.toBeCalled();
             expect(result).toEqual({
                 totalCount: exampleData.total_count,
                 items: exampleData.items

@@ -11,6 +11,7 @@ import {
     errorResponseConverter,
     successResponseConverter
 } from "../converters/responseConverter";
+import {MAX_NUMBER_PER_PAGE} from "../constants/environment";
 
 const searchHandlerFactory = (
     searchService: ISearchService,
@@ -33,6 +34,15 @@ const searchHandlerFactory = (
             name: queryParameters.name,
             page: Number(queryParameters.page) || undefined,
             perPage: Number(queryParameters.perPage) || undefined
+        }
+
+        if (validatedParams.perPage > MAX_NUMBER_PER_PAGE) {
+            return {
+                statusCode: 400,
+                body: badRequestResponseConverter(
+                    `The maximum number for per page param is ${MAX_NUMBER_PER_PAGE}`
+                )
+            }
         }
 
         let response;
