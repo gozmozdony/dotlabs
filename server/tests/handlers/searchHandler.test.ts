@@ -144,5 +144,37 @@ describe('Search Handler', () => {
             expect(mockSearchByUsername).not.toBeCalled();
             expect(result).toEqual(expected);
         });
+
+        it('Should return with bad request when param "name" is shortet than min length', async () => {
+            const expected = {
+                statusCode: 400,
+                body: JSON.stringify({
+                    status: 400,
+                    message: 'Bad Request',
+                    description: [
+                        {
+                            keyword: 'minLength',
+                            dataPath: '/name',
+                            schemaPath: '#/properties/name/minLength',
+                            params: { limit: 3 },
+                            message: 'should NOT have fewer than 3 characters'
+                        }
+                    ]
+                })
+            };
+
+
+            mockSearchByUsername.mockResolvedValue({
+                total_count: 0,
+                items: []
+            });
+            const result = await searchHandlerFactory(mockSearchService, validator)({
+                queryStringParameters: {
+                    name: "fo"
+                } as APIGatewayProxyEventQueryStringParameters
+            } as APIGatewayProxyEvent);
+            expect(mockSearchByUsername).not.toBeCalled();
+            expect(result).toEqual(expected);
+        });
     });
 });

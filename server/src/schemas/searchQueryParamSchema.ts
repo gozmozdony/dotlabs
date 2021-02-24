@@ -1,9 +1,12 @@
+import {MIN_STRING_LENGTH} from "../constants/environment";
+
 const schema: any = {
     type: "object",
     properties: {
         name: {
             type: "string",
-            pattern: "^[a-zA-Z0-9_ .]*$"
+            pattern: "^[a-zA-Z0-9_ .]*$",
+            minLength: MIN_STRING_LENGTH
         },
         page: {
             type: "string",
