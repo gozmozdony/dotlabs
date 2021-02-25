@@ -26,6 +26,10 @@ const searchHandlerFactory = (
         if (!valid) {
             return {
                 statusCode: 400,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+                },
                 body: badRequestResponseConverter(validate.errors)
             }
         }
@@ -39,6 +43,10 @@ const searchHandlerFactory = (
         if (validatedParams.perPage > MAX_NUMBER_PER_PAGE) {
             return {
                 statusCode: 400,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+                },
                 body: badRequestResponseConverter(
                     `The maximum number for per page param is ${MAX_NUMBER_PER_PAGE}`
                 )
@@ -51,11 +59,19 @@ const searchHandlerFactory = (
         } catch (error) {
             return {
                 statusCode: 500,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+                },
                 body: errorResponseConverter(error)
             }
         }
         return {
             statusCode: 200,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+            },
             body: successResponseConverter(response)
         }
     }

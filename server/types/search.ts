@@ -5,7 +5,7 @@ export type SearchResult = {
 
 export type User = {
     name: string;
-    email: string;
+    email: string | null;
     username: string;
     followers: number;
     following: number;

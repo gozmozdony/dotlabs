@@ -40,5 +40,22 @@ Deploy the IaC and create/update services
 ## Client
 ### TBD
 
+## Issues
+- The deployed Lambda is set up in gateway as a Proxy
+- The deployed gateway resource CORS still have an issue
+- The deployed gateway resource needs query params in the templating
+
 ## Nice to Haves
 - Full Ci/CD pipeline
+- Router for FE app
+- CORS and domain settings due to security
+- WAF
+- One time JWT token between FE and BE
+- BE Authorizer for token
+- Workbox - GraphQl - Apollo caching
+- State management for FE VueX ?
+- Linter settings for BE
+- Pre commit Hook - linter+test
+- Integration test for BE
+- FE snapshot testing
+- Shared package for typings 
