@@ -34,6 +34,8 @@ import ListItemSkeleton from './ListItemSkeleton.vue';
   },
 })
 export default class List extends Vue {
+  // TODO needs testing files
+  // TODO too much function for a simple component
   searchMessage: SearchServiceMessage = {
     users: [],
     count: 0,

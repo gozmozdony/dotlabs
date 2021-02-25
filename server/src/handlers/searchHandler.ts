@@ -26,6 +26,8 @@ const searchHandlerFactory = (
         if (!valid) {
             return {
                 statusCode: 400,
+                // TODO issue with CORS and proxy behaviour with Lambda
+                // TODO either remove proxy and fix template or create a HOC around responses for headers
                 headers: {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
@@ -43,6 +45,7 @@ const searchHandlerFactory = (
         if (validatedParams.perPage > MAX_NUMBER_PER_PAGE) {
             return {
                 statusCode: 400,
+                // TODO issue with CORS and proxy behaviour with Lambda
                 headers: {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
@@ -59,6 +62,7 @@ const searchHandlerFactory = (
         } catch (error) {
             return {
                 statusCode: 500,
+                // TODO issue with CORS and proxy behaviour with Lambda
                 headers: {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
@@ -68,6 +72,7 @@ const searchHandlerFactory = (
         }
         return {
             statusCode: 200,
+            // TODO issue with CORS and proxy behaviour with Lambda
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"

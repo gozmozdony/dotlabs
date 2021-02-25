@@ -10,7 +10,7 @@ export type SearchServiceMessage = {
 }
 
 const subject = new Subject<SearchServiceMessage>();
-
+// TODO refactor, working PoC with RxJS
 const SearchService = {
   searchRequest: (username: string) => {
     fetch(
