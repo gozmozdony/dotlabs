@@ -59,3 +59,4 @@ Deploy the IaC and create/update services
 - Integration test for BE
 - FE snapshot testing
 - Shared package for typings 
+- Auto .env generation for endpoint for FE

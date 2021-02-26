@@ -49,6 +49,29 @@ describe('Search Business Service test', () => {
             });
         });
 
+        it('Should return with less totalCount when response exceedes a 1000', async () => {
+            const exampleData = {
+                total_count: 10000,
+                incomplete_results: false,
+                items: [
+                    searchResultExample
+                ]
+            };
+            const queryParams = { name: 'gozmozdony'};
+            mockSearchFn.mockResolvedValue({
+                data: exampleData
+            });
+            mockGetByUsernameFn.mockResolvedValue({ data: userResultExample });
+
+            const result = await service.searchByUsername(queryParams);
+            expect(mockSearchFn).toBeCalledWith({q: queryParams.name});
+            expect(mockGetByUsernameFn).toBeCalledWith({username: queryParams.name});
+            expect(result).toEqual({
+                totalCount: 1000,
+                items: dataResponseConverter([userResultExample])
+            });
+        });
+
         it('Should return with results when calling with multiple params', async () => {
             const exampleData = {
                 total_count: 1,

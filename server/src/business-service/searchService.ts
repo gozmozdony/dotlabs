@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/rest";
 import { SearchQueryParams, SearchResult } from "../../types/search";
-import {dataResponseConverter} from "../converters/dataConverter";
+import { dataResponseConverter } from "../converters/dataConverter";
 
 export interface ISearchService {
     searchByUsername( queryParameters: SearchQueryParams ): Promise<SearchResult>
@@ -21,8 +21,10 @@ const SearchServiceFactory = (octokit: Octokit): ISearchService => {
                 })).data
             ));
 
+            const totalCount = results.data.total_count > 1000 ? 1000 : results.data.total_count;
+
             return {
-                totalCount: results.data.total_count,
+                totalCount,
                 items: dataResponseConverter(userRecords)
             } ;
         }

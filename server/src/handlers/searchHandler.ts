@@ -12,6 +12,7 @@ import {
     successResponseConverter
 } from "../converters/responseConverter";
 import {MAX_NUMBER_PER_PAGE} from "../constants/environment";
+import { CORSHeaders } from "../utils/cors";
 
 const searchHandlerFactory = (
     searchService: ISearchService,
@@ -24,16 +25,10 @@ const searchHandlerFactory = (
         const validate = validator.compile(schema);
         const valid = validate(queryParameters);
         if (!valid) {
-            return {
+            return CORSHeaders({
                 statusCode: 400,
-                // TODO issue with CORS and proxy behaviour with Lambda
-                // TODO either remove proxy and fix template or create a HOC around responses for headers
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-                },
                 body: badRequestResponseConverter(validate.errors)
-            }
+            });
         }
 
         const validatedParams = {
@@ -43,42 +38,27 @@ const searchHandlerFactory = (
         }
 
         if (validatedParams.perPage > MAX_NUMBER_PER_PAGE) {
-            return {
+            return CORSHeaders({
                 statusCode: 400,
-                // TODO issue with CORS and proxy behaviour with Lambda
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-                },
                 body: badRequestResponseConverter(
                     `The maximum number for per page param is ${MAX_NUMBER_PER_PAGE}`
                 )
-            }
+            });
         }
 
         let response;
         try {
             response = await searchService.searchByUsername(validatedParams);
         } catch (error) {
-            return {
+            return CORSHeaders({
                 statusCode: 500,
-                // TODO issue with CORS and proxy behaviour with Lambda
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-                },
                 body: errorResponseConverter(error)
-            }
+            });
         }
-        return {
+        return CORSHeaders({
             statusCode: 200,
-            // TODO issue with CORS and proxy behaviour with Lambda
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-            },
             body: successResponseConverter(response)
-        }
+        });
     }
 }
 

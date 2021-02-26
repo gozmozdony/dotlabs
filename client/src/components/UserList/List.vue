@@ -22,7 +22,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Subscription } from 'rxjs';
 
-import SearchService, { SearchServiceMessage } from '@/service/searchService';
+import SearchService from '@/service/searchService';
+import { SearchServiceMessage } from '../../../types/search';
 
 import ListItem from './ListItem.vue';
 import ListItemSkeleton from './ListItemSkeleton.vue';
@@ -67,7 +68,7 @@ export default class List extends Vue {
   }
 
   created() {
-    this.subscription = SearchService.getSearch().subscribe((message: any) => {
+    this.subscription = SearchService.observable().subscribe((message: any) => {
       if (message) {
         this.searchMessage = message;
       } else {

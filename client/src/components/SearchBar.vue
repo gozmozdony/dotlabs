@@ -1,27 +1,30 @@
 <template>
   <b-row>
     <b-col>
-      <b-form @submit="submit" @submit.stop.prevent>
-        <b-input-group class="mb-2">
-          <b-input-group-prepend is-text>
-            <b-icon icon="search"></b-icon>
-          </b-input-group-prepend>
-          <b-form-input
-            v-model="username"
-            type="search"
-            placeholder="Username"
-            :state="validation"
-          ></b-form-input>
+      <b-form @submit.stop.prevent>
+        <b-form-group
+          description="Start typing in and the search automatically start."
+        >
+          <b-input-group class="mb-2">
+            <b-input-group-prepend is-text>
+              <b-icon icon="search"></b-icon>
+            </b-input-group-prepend>
+            <b-form-input
+              v-model="username"
+              v-debounce:500ms="search"
+              type="search"
+              placeholder="Username"
+              :disabled="disabled"
+              :state="validation"
+            ></b-form-input>
+          </b-input-group>
           <b-form-invalid-feedback :state="validation">
-            Your user ID must be at least 3 characters long.
+            The username must be at least 3 characters long.
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="validation">
-            Looks Good.
+            Your input looks valid.
           </b-form-valid-feedback>
-        </b-input-group>
-        <b-input-group>
-          <b-button type="submit" variant="primary">Submit</b-button>
-        </b-input-group>
+        </b-form-group>
       </b-form>
     </b-col>
   </b-row>
@@ -29,20 +32,34 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Subscription } from 'rxjs';
 
 import SearchService from '@/service/searchService';
 
 @Component
 export default class SearchBar extends Vue {
-  username = '';
+  private subscription: Subscription | undefined;
 
-  get validation() {
+  public username = '';
+
+  public disabled = false;
+
+  public get validation() {
     if (this.username === '') return undefined;
     return this.username.length > 2;
   }
 
-  submit() {
-    SearchService.searchRequest(this.username);
+  public search() {
+    if (!this.validation) return;
+    SearchService.searchRequest({
+      name: this.username,
+    });
+  }
+
+  private created() {
+    this.subscription = SearchService.observable().subscribe((message: any) => {
+      this.disabled = message.loading || false;
+    });
   }
 }
 </script>

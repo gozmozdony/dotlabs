@@ -7,6 +7,10 @@ import {MAX_NUMBER_PER_PAGE} from "../../src/constants/environment";
 
 describe('Search Handler', () => {
     const validator = new Ajv();
+    const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+    };
     let mockSearchService: ISearchService;
     let mockSearchByUsername: jest.Mock;
     beforeEach(() => {
@@ -18,6 +22,7 @@ describe('Search Handler', () => {
     describe('handler function', () => {
         it('Should return with status OK and empty array of results with only one param', async () => {
             const expected = {
+                headers,
                 statusCode: 200,
                 body: JSON.stringify({
                     status: 200,
@@ -40,6 +45,7 @@ describe('Search Handler', () => {
 
         it('Should return with status OK and empty array of results with multiple param', async () => {
             const expected = {
+                headers,
                 statusCode: 200,
                 body: JSON.stringify({
                     status: 200,
@@ -70,6 +76,7 @@ describe('Search Handler', () => {
 
         it('Should return with bad request when name param is missing', async () => {
             const expected = {
+                headers,
                 statusCode: 400,
                 body: JSON.stringify({
                     status: 400,
@@ -94,6 +101,7 @@ describe('Search Handler', () => {
 
         it('Should return with bad request when per page number is bigger than allowed', async () => {
             const expected = {
+                headers,
                 statusCode: 400,
                 body: JSON.stringify({
                     status: 400,
@@ -115,6 +123,7 @@ describe('Search Handler', () => {
 
         it('Should return with bad request when param is contains non word character', async () => {
             const expected = {
+                headers,
                 statusCode: 400,
                 body: JSON.stringify({
                     status: 400,
@@ -147,6 +156,7 @@ describe('Search Handler', () => {
 
         it('Should return with bad request when param "name" is shortet than min length', async () => {
             const expected = {
+                headers,
                 statusCode: 400,
                 body: JSON.stringify({
                     status: 400,
