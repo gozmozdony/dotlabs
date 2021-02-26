@@ -1,4 +1,4 @@
-export const searchResultExample = {
+const searchResultExample = {
   name: 'Octocat',
   username: 'octocat',
   email: 'octocat@github.com',
@@ -8,3 +8,5 @@ export const searchResultExample = {
   followers: 20,
   following: 15,
 };
+
+export default searchResultExample;

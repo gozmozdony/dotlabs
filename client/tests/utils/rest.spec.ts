@@ -6,9 +6,9 @@ import {
 } from '@/utils/rest';
 import { Subject } from 'rxjs';
 
-import Mock = jest.Mock;
-
 import { SearchServiceMessage } from '../../types/search';
+
+import Mock = jest.Mock;
 
 describe('Rest utils', () => {
   describe('Query param string generator', () => {

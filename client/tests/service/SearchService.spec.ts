@@ -5,7 +5,7 @@ import * as RestUtils from '@/utils/rest';
 import { DEFAULT_HEADERS, DEFAULT_PAGE_SIZE } from '@/constants/rest';
 import { SearchServiceFactory, SearchServiceInterface } from '@/service/searchService';
 
-import { SearchServiceMessage } from '../../types/search';
+import { SearchServiceMessage } from '@/search';
 import Mock = jest.Mock;
 
 jest.mock('@/utils/rest');
@@ -26,7 +26,6 @@ describe('Search service Factory', () => {
   let searchService: SearchServiceInterface;
 
   describe('Send search request', () => {
-
     beforeEach(() => {
       mockFetch = jest.fn();
       mockJson = jest.fn();
@@ -50,7 +49,7 @@ describe('Search service Factory', () => {
     });
 
     it('Should call loading and success message when request is successful', async () => {
-      const search = 'octocate'
+      const search = 'octocate';
       const response = {
         items: [],
         totalCount: 0,
@@ -66,24 +65,24 @@ describe('Search service Factory', () => {
       mockJson.mockReturnValue(response);
 
       await searchService.searchRequest({
-        name: search
+        name: search,
       });
       expect(mockRestUtils.generateQueryParams).toBeCalledWith({
         name: search,
         page: 1,
-        perPage: DEFAULT_PAGE_SIZE
+        perPage: DEFAULT_PAGE_SIZE,
       });
       expect(mockRestUtils.sendLoadingMessage).toHaveBeenCalledWith(mockSubject);
       expect(mockFetch).toBeCalledWith(
         `${api}?${generatedQuery}`,
-        { headers: DEFAULT_HEADERS }
+        { headers: DEFAULT_HEADERS },
       );
       expect(mockJson).toBeCalled();
       expect(mockRestUtils.sendSuccessMessage).toHaveBeenCalledWith(mockSubject, response);
     });
 
     it('Should call loading and error message when request - 500 is unsuccessful', async () => {
-      const search = 'octocate'
+      const search = 'octocate';
       const response = {
         items: [],
         totalCount: 0,
@@ -99,17 +98,17 @@ describe('Search service Factory', () => {
       mockJson.mockReturnValue(response);
 
       await searchService.searchRequest({
-        name: search
+        name: search,
       });
       expect(mockRestUtils.generateQueryParams).toBeCalledWith({
         name: search,
         page: 1,
-        perPage: DEFAULT_PAGE_SIZE
+        perPage: DEFAULT_PAGE_SIZE,
       });
       expect(mockRestUtils.sendLoadingMessage).toHaveBeenCalledWith(mockSubject);
       expect(mockFetch).toBeCalledWith(
         `${api}?${generatedQuery}`,
-        { headers: DEFAULT_HEADERS }
+        { headers: DEFAULT_HEADERS },
       );
       expect(mockJson).toBeCalled();
       expect(mockRestUtils.sendSuccessMessage).not.toBeCalled();
@@ -117,7 +116,7 @@ describe('Search service Factory', () => {
     });
 
     it('Should call loading and error message when request - 400 is unsuccessful', async () => {
-      const search = 'octocate'
+      const search = 'octocate';
       const response = {
         items: [],
         totalCount: 0,
@@ -133,17 +132,17 @@ describe('Search service Factory', () => {
       mockJson.mockReturnValue(response);
 
       await searchService.searchRequest({
-        name: search
+        name: search,
       });
       expect(mockRestUtils.generateQueryParams).toBeCalledWith({
         name: search,
         page: 1,
-        perPage: DEFAULT_PAGE_SIZE
+        perPage: DEFAULT_PAGE_SIZE,
       });
       expect(mockRestUtils.sendLoadingMessage).toHaveBeenCalledWith(mockSubject);
       expect(mockFetch).toBeCalledWith(
         `${api}?${generatedQuery}`,
-        { headers: DEFAULT_HEADERS }
+        { headers: DEFAULT_HEADERS },
       );
       expect(mockJson).toBeCalled();
       expect(mockRestUtils.sendSuccessMessage).not.toBeCalled();
@@ -151,24 +150,24 @@ describe('Search service Factory', () => {
     });
 
     it('Should call loading and error message when request is rejected', async () => {
-      const search = 'octocat'
+      const search = 'octocat';
       const generatedQuery = `name=${search}&page=1&perPage=${DEFAULT_PAGE_SIZE}`;
       const error = new Error('Internal server error');
       mockRestUtils.generateQueryParams.mockReturnValue(generatedQuery);
       mockFetch.mockRejectedValue(error);
 
       await searchService.searchRequest({
-        name: search
+        name: search,
       });
       expect(mockRestUtils.generateQueryParams).toBeCalledWith({
         name: search,
         page: 1,
-        perPage: DEFAULT_PAGE_SIZE
+        perPage: DEFAULT_PAGE_SIZE,
       });
       expect(mockRestUtils.sendLoadingMessage).toHaveBeenCalledWith(mockSubject);
       expect(mockFetch).toBeCalledWith(
         `${api}?${generatedQuery}`,
-        { headers: DEFAULT_HEADERS }
+        { headers: DEFAULT_HEADERS },
       );
       expect(mockJson).not.toBeCalled();
       expect(mockRestUtils.sendSuccessMessage).not.toBeCalled();
@@ -177,7 +176,6 @@ describe('Search service Factory', () => {
   });
 
   describe('Paginator', () => {
-
     beforeEach(() => {
       mockSearchRequest = jest.fn();
 
@@ -194,7 +192,7 @@ describe('Search service Factory', () => {
       searchService.paginate(1, 5);
       expect(mockRestUtils.sendErrorMessage).toBeCalledWith(
         mockSubject,
-        'There were no previous search!'
+        'There were no previous search!',
       );
       expect(mockSearchRequest).not.toBeCalled();
     });
@@ -203,15 +201,15 @@ describe('Search service Factory', () => {
       const page = 1;
       const perPage = 5;
       searchService.previousQueryParams = {
-        name: 'octocat'
+        name: 'octocat',
       };
       await searchService.paginate(page, perPage);
       expect(mockRestUtils.sendErrorMessage).not.toBeCalled();
       expect(mockSearchRequest).toBeCalledWith({
         ...searchService.previousQueryParams,
         page,
-        perPage
-      })
+        perPage,
+      });
     });
   });
 
@@ -219,7 +217,7 @@ describe('Search service Factory', () => {
     beforeEach(() => {
       mockAsObservable = jest.fn();
       mockSubject = {
-        asObservable: mockAsObservable
+        asObservable: mockAsObservable,
       } as any;
       searchService = SearchServiceFactory(mockSubject);
     });

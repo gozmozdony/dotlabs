@@ -35,6 +35,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Subscription } from 'rxjs';
 
 import SearchService from '@/service/searchService';
+import { SearchServiceMessage } from '@/search';
 
 @Component
 export default class SearchBar extends Vue {
@@ -57,7 +58,7 @@ export default class SearchBar extends Vue {
   }
 
   private created() {
-    this.subscription = SearchService.observable().subscribe((message: any) => {
+    this.subscription = SearchService.observable().subscribe((message: SearchServiceMessage) => {
       this.disabled = message.loading || false;
     });
   }

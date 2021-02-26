@@ -4,7 +4,7 @@ import ListItem from '@/components/UserList/ListItem.vue';
 import {
   BCard, BImg, BCol, BRow, BBadge, BMedia, BMediaAside, BMediaBody,
 } from 'bootstrap-vue';
-import { searchResultExample } from '../../testData';
+import searchResultExample from '../../testData';
 
 describe('User ListItem.vue', () => {
   const components = {

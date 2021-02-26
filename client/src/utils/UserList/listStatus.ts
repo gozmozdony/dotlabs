@@ -1,28 +1,22 @@
-import { SearchServiceMessage } from "../../../types/search";
+import { SearchServiceMessage } from '../../../types/search';
 
-const isLoading = (message: SearchServiceMessage) => {
-  return message.users.length === 0 && message.loading;
-}
+const isLoading = (message: SearchServiceMessage) => message.users.length === 0 && message.loading;
 
-const isSuccessful = (message: SearchServiceMessage) => {
-  return message.users.length > 0
+const isSuccessful = (message: SearchServiceMessage) => message.users.length > 0
     && !message.loading
     && !message.error;
-}
 
-const isError = (message: SearchServiceMessage) => {
-  return message.error;
-}
+const isError = (message: SearchServiceMessage) => message.error;
 
-const isPristine = (message: SearchServiceMessage) => {
-  return !message.error
+const isPristine = (message: SearchServiceMessage) => !message.error
     && message.users.length === 0
     && !message.loading;
-}
 
-export const listStatus = {
+const listStatus = {
   isError,
   isLoading,
   isPristine,
   isSuccessful,
-}
+};
+
+export default listStatus;

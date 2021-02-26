@@ -10,7 +10,7 @@ import {
 
 import {
   SearchAPIResponse, SearchQueryParams, SearchServiceMessage, User,
-} from '../../types/search';
+} from '@/search';
 
 export interface SearchServiceInterface {
   searchRequest(queryParams: SearchQueryParams): Promise<void>;
@@ -28,7 +28,6 @@ export const SearchServiceFactory = (
     perPage: DEFAULT_PAGE_SIZE,
   },
   async searchRequest(queryParams: SearchQueryParams) {
-
     sendLoadingMessage(subject);
 
     await fetch(
@@ -61,8 +60,8 @@ export const SearchServiceFactory = (
       await this.searchRequest({
         ...this.previousQueryParams,
         page,
-        perPage
-      })
+        perPage,
+      });
     }
   },
   observable: () => subject.asObservable(),

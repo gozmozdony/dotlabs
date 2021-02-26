@@ -1,32 +1,49 @@
-import { shallowMount } from '@vue/test-utils';
-import Paginator from '@/components/UserList/Paginator.vue';
-
+import { mocked } from 'ts-jest/utils';
 import { BPagination } from 'bootstrap-vue';
-import Mock = jest.Mock;
+import { shallowMount } from '@vue/test-utils';
 
+import Paginator from '@/components/Pagination/Paginator.vue';
+
+import Mock = jest.Mock;
+import SearchService, { SearchServiceInterface } from "@/service/searchService";
+
+jest.mock('@/service/searchService');
 
 describe('Paginator.vue', () => {
   const components = {
-    BPagination
+    BPagination,
   };
-  let mockObservable: Mock;
   let mockSubscribe: Mock;
+  let mockSearchService: any;
   beforeEach(() => {
-    mockObservable = jest.fn();
     mockSubscribe = jest.fn();
-    jest.mock('@/service/searchService', () => ({
-      observable: mockObservable
-    }));
+    mockSearchService = mocked(SearchService);
+    mockSearchService.observable.mockClear();
   });
 
   it('Should subscribe to SearchService', () => {
+    mockSearchService.observable.mockReturnValue({
+      subscribe: mockSubscribe,
+    });
     shallowMount(Paginator, {
       components,
     });
-    mockObservable.mockImplementation(() => ({
-      subscribe: mockSubscribe
-    }));
-    expect(mockObservable).toBeCalled();
+    expect(mockSearchService.observable).toBeCalled();
     expect(mockSubscribe).toBeCalled();
+  });
+
+  it('Should call paginate when calling change method', () => {
+    mockSearchService.observable.mockReturnValue({
+      subscribe: mockSubscribe,
+    });
+    const wrapper: any = shallowMount(Paginator, {
+      components,
+    });
+    expect(wrapper.vm.change(1));
+    expect(mockSearchService.observable).toBeCalled();
+    expect(mockSearchService.paginate).toBeCalledWith(
+      1,
+      5
+    );
   });
 });
