@@ -25,13 +25,9 @@ export default class Paginator extends Vue {
 
   public perPage = DEFAULT_PAGE_SIZE;
 
-  change(page) {
+  public change(page: number) {
     this.currentPage = page;
-    SearchService.searchRequest({
-      ...SearchService.previousQueryParams,
-      page,
-      perPage: DEFAULT_PAGE_SIZE,
-    });
+    SearchService.paginate(page, this.perPage);
   }
 
   private created() {

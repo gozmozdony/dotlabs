@@ -1,18 +1,18 @@
 <template>
   <div>
-    <ul class="list-unstyled" v-if="isLoading">
+    <ul class="list-unstyled" v-if="status.isLoading(searchMessage)">
       <ListItemSkeleton/>
       <ListItemSkeleton/>
     </ul>
-    <ul class="list-unstyled" v-if="isSuccessfull">
+    <ul class="list-unstyled" v-if="status.isSuccessful(searchMessage)">
       <ListItem
         v-for="user in searchMessage.users" :key="user.username"
         :user="user"/>
     </ul>
-    <h3 class="text-center my-4 text-danger" v-if="isError">
+    <h3 class="text-center my-4 text-danger" v-if="status.isError(searchMessage)">
       {{ searchMessage.message }}
     </h3>
-    <h3 class="text-center my-4" v-if="isPristine">
+    <h3 class="text-center my-4" v-if="status.isPristine(searchMessage)">
       Type in something to search for user
     </h3>
   </div>
@@ -23,6 +23,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Subscription } from 'rxjs';
 
 import SearchService from '@/service/searchService';
+import { listStatus } from '@/utils/UserList/listStatus';
 import { SearchServiceMessage } from '../../../types/search';
 
 import ListItem from './ListItem.vue';
@@ -35,8 +36,9 @@ import ListItemSkeleton from './ListItemSkeleton.vue';
   },
 })
 export default class List extends Vue {
-  // TODO needs testing files
-  // TODO too much function for a simple component
+
+  status = listStatus;
+
   searchMessage: SearchServiceMessage = {
     users: [],
     count: 0,
@@ -47,25 +49,6 @@ export default class List extends Vue {
 
   subscription: Subscription | undefined;
 
-  get isLoading() {
-    return this.searchMessage.users.length === 0 && this.searchMessage.loading;
-  }
-
-  get isSuccessfull() {
-    return this.searchMessage.users.length > 0
-      && !this.searchMessage.loading
-      && !this.searchMessage.error;
-  }
-
-  get isError() {
-    return this.searchMessage.error;
-  }
-
-  get isPristine() {
-    return !this.searchMessage.error
-      && this.searchMessage.users.length === 0
-      && !this.searchMessage.loading;
-  }
 
   created() {
     this.subscription = SearchService.observable().subscribe((message: any) => {

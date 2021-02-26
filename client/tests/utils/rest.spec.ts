@@ -5,8 +5,10 @@ import {
   sendSuccessMessage,
 } from '@/utils/rest';
 import { Subject } from 'rxjs';
-import { SearchServiceMessage } from '@/search';
+
 import Mock = jest.Mock;
+
+import { SearchServiceMessage } from '../../types/search';
 
 describe('Rest utils', () => {
   describe('Query param string generator', () => {
