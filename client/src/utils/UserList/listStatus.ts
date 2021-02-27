@@ -1,4 +1,4 @@
-import { SearchServiceMessage } from '../../../types/search';
+import { SearchServiceMessage } from '@/types/search';
 
 const isLoading = (message: SearchServiceMessage) => message.users.length === 0 && message.loading;
 

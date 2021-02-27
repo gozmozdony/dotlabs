@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { SearchServiceMessage } from '../../types/search';
+import { SearchServiceMessage } from '@/types/search';
 
 export const generateQueryParams = (
   data: { [key: string]: string | number | undefined },

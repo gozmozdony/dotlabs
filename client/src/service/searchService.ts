@@ -9,8 +9,8 @@ import {
 } from '@/utils/rest';
 
 import {
-  SearchAPIResponse, SearchQueryParams, SearchServiceMessage, User,
-} from '@/search';
+  SearchAPIResponse, SearchQueryParams, SearchServiceMessage,
+} from '@/types/search';
 
 export interface SearchServiceInterface {
   searchRequest(queryParams: SearchQueryParams): Promise<void>;
@@ -41,8 +41,23 @@ export const SearchServiceFactory = (
       .then((data: SearchAPIResponse) => {
         if (data.status === 500) sendErrorMessage(subject, data.message);
         if (data.status === 400) sendErrorMessage(subject, data.message);
+        if (data.status === 206) {
+          sendSuccessMessage(subject, {
+            ...data,
+            totalCount: 1000,
+            message: `Original total: ${data.totalCount}`,
+          });
+
+          this.previousQueryParams = {
+            ...this.previousQueryParams,
+            ...queryParams,
+          };
+        }
         if (data.status === 200) {
-          sendSuccessMessage(subject, data);
+          sendSuccessMessage(subject, {
+            ...data,
+            message: null,
+          });
 
           this.previousQueryParams = {
             ...this.previousQueryParams,

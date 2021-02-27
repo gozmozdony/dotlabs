@@ -24,7 +24,7 @@ import { Subscription } from 'rxjs';
 
 import SearchService from '@/service/searchService';
 import listStatus from '@/utils/UserList/listStatus';
-import { SearchServiceMessage } from '@/search';
+import { SearchServiceMessage } from '@/types/search';
 
 import ListItem from './ListItem.vue';
 import ListItemSkeleton from './ListItemSkeleton.vue';

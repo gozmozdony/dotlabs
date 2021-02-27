@@ -1,6 +1,6 @@
 import {
     badRequestResponseConverter,
-    errorResponseConverter,
+    errorResponseConverter, partialContentResponseConverter,
     successResponseConverter
 } from "../../src/converters/responseConverter";
 
@@ -14,6 +14,20 @@ describe('Response converters', () => {
                 results
             });
             const result = successResponseConverter({ results });
+            expect(result).toEqual(expected);
+        });
+    });
+
+    describe('partial converter function', () => {
+        it('Should return with status adhering to API Governance', () => {
+            const results: any[] = [];
+            const message = 'Partial message';
+            const expected = JSON.stringify({
+                status: 206,
+                message,
+                results
+            });
+            const result = partialContentResponseConverter({ results }, message);
             expect(result).toEqual(expected);
         });
     });

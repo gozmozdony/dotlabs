@@ -1,3 +1,11 @@
+export const partialContentResponseConverter = (data: any, message: string) => {
+    return JSON.stringify({
+        status: 206,
+        message,
+        ...data
+    })
+}
+
 export const successResponseConverter = (data: any) => {
     return JSON.stringify({
         status: 200,

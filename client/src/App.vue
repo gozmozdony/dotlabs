@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <b-container>
-      <h1>Search for Github Users</h1>
+      <h1 class="my-4">Search for Github Users</h1>
       <SearchBar/>
       <List/>
       <Paginator/>
@@ -12,7 +12,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import SearchBar from './components/SearchBar.vue';
+import SearchBar from './components/SearchBar/SearchBar.vue';
 import Paginator from './components/Pagination/Paginator.vue';
 import List from './components/UserList/List.vue';
 

@@ -1,9 +1,10 @@
 import Ajv from "ajv";
 import { APIGatewayProxyEvent, APIGatewayProxyEventQueryStringParameters } from "aws-lambda";
 
-import { ISearchService } from "../../src/business-service/searchService";
 import searchHandlerFactory from "../../src/handlers/searchHandler";
-import {MAX_NUMBER_PER_PAGE} from "../../src/constants/environment";
+import { ISearchService } from "../../src/business-service/searchService";
+import { MAX_NUMBER_PER_PAGE } from "../../src/constants/environment";
+import { GITHUB_LIMITATION_RESPONSE } from "../../src/constants/responses";
 
 describe('Search Handler', () => {
     const validator = new Ajv();
@@ -27,13 +28,36 @@ describe('Search Handler', () => {
                 body: JSON.stringify({
                     status: 200,
                     message: 'OK',
-                    total_count: 0,
+                    totalCount: 0,
                     items: []
                 })
             };
             const queryStringParameters = { name: 'gozmozdony' } as any;
             mockSearchByUsername.mockResolvedValue({
-                total_count: 0,
+                totalCount: 0,
+                items: []
+            });
+            const result = await searchHandlerFactory(mockSearchService, validator)({
+                queryStringParameters
+            } as APIGatewayProxyEvent);
+            expect(mockSearchByUsername).toBeCalledWith(queryStringParameters);
+            expect(result).toEqual(expected);
+        });
+
+        it('Should return with status Partial Content if the total count is higher than 1000', async () => {
+            const expected = {
+                headers,
+                statusCode: 206,
+                body: JSON.stringify({
+                    status: 206,
+                    message: GITHUB_LIMITATION_RESPONSE,
+                    totalCount: 2000,
+                    items: []
+                })
+            };
+            const queryStringParameters = { name: 'gozmozdony' } as any;
+            mockSearchByUsername.mockResolvedValue({
+                totalCount: 2000,
                 items: []
             });
             const result = await searchHandlerFactory(mockSearchService, validator)({
@@ -140,11 +164,6 @@ describe('Search Handler', () => {
                 })
             };
 
-
-            mockSearchByUsername.mockResolvedValue({
-                total_count: 0,
-                items: []
-            });
             const result = await searchHandlerFactory(mockSearchService, validator)({
                 queryStringParameters: {
                     name: "<hello>"
@@ -173,11 +192,6 @@ describe('Search Handler', () => {
                 })
             };
 
-
-            mockSearchByUsername.mockResolvedValue({
-                total_count: 0,
-                items: []
-            });
             const result = await searchHandlerFactory(mockSearchService, validator)({
                 queryStringParameters: {
                     name: "fo"

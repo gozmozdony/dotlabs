@@ -1,5 +1,5 @@
 import listStatus from '@/utils/UserList/listStatus';
-import { SearchServiceMessage, User } from '@/search';
+import { SearchServiceMessage, User } from '@/types/search';
 
 describe('User List util', () => {
   const status = listStatus;

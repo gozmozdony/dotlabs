@@ -5,7 +5,7 @@ import * as RestUtils from '@/utils/rest';
 import { DEFAULT_HEADERS, DEFAULT_PAGE_SIZE } from '@/constants/rest';
 import { SearchServiceFactory, SearchServiceInterface } from '@/service/searchService';
 
-import { SearchServiceMessage } from '@/search';
+import { SearchServiceMessage } from '@/types/search';
 import Mock = jest.Mock;
 
 jest.mock('@/utils/rest');

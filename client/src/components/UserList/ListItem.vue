@@ -2,7 +2,7 @@
   <b-card class="my-4">
     <b-media  no-body tag="li">
       <b-media-aside vertical-align="center">
-        <b-img width="64" alt="placeholder" :src="user.profilePic"></b-img>
+        <b-img width="64" height="64" alt="placeholder" :src="user.profilePic"></b-img>
       </b-media-aside>
       <b-media-body>
         <b-row>
@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { User } from '../../../types/search';
+import { User } from '@/types/search';
 
 @Component
 export default class ListItem extends Vue {

@@ -8,10 +8,11 @@ import schema from '../schemas/searchQueryParamSchema';
 import { ISearchService } from "../business-service/searchService";
 import {
     badRequestResponseConverter,
-    errorResponseConverter,
+    errorResponseConverter, partialContentResponseConverter,
     successResponseConverter
 } from "../converters/responseConverter";
-import {MAX_NUMBER_PER_PAGE} from "../constants/environment";
+import { MAX_NUMBER_PER_PAGE } from "../constants/environment";
+import { GITHUB_LIMITATION_RESPONSE } from "../constants/responses";
 import { CORSHeaders } from "../utils/cors";
 
 const searchHandlerFactory = (
@@ -55,6 +56,15 @@ const searchHandlerFactory = (
                 body: errorResponseConverter(error)
             });
         }
+
+        console.log(response.totalCount);
+        if (response.totalCount > 1000) {
+            return CORSHeaders({
+                statusCode: 206,
+                body: partialContentResponseConverter(response, GITHUB_LIMITATION_RESPONSE)
+            });
+        }
+
         return CORSHeaders({
             statusCode: 200,
             body: successResponseConverter(response)

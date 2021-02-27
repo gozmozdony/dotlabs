@@ -37,26 +37,39 @@ Build the code
 Package the code into an artifact and push to an S3 bucket
 #### Deploy
 Deploy the IaC and create/update services
-## Client
-### TBD
 
-## Issues
-- The deployed Lambda is set up in gateway as a Proxy
-- The deployed gateway resource CORS still have an issue
-- The deployed gateway resource needs query params in the templating
+## Client
+### Commands
+### Test
+Run tests
+
+`yarn run test:unit`
+### Build
+Build the code
+
+`yarn run build`
+### Serve
+Run in serve
+
+`yarn run serve`
 
 ## Nice to Haves
+### Global
 - Full Ci/CD pipeline
-- Router for FE app
 - CORS and domain settings due to security
-- WAF
 - One time JWT token between FE and BE
-- BE Authorizer for token
-- Workbox - GraphQl - Apollo caching
-- State management for FE VueX ?
-- Linter settings for BE
+- WAF
 - Pre commit Hook - linter+test
-- Integration test for BE
-- FE snapshot testing
-- Shared package for typings 
+- Shared package for typings
+### BE
+- Linter settings 
+- Authorization
+- Integration test
+- Gateway should not be configured as Proxy
+### FE
+- Workbox - GraphQl - Apollo caching?
+- State management, VueX?
+- Snapshot testing
 - Auto .env generation for endpoint for FE
+- Break down pagination into multiple components
+- Lot of tests missing or outdated

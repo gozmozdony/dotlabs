@@ -22,7 +22,7 @@
     "scripts": {
         "test": "jest",
         "build": "webpack",
-        "package": "sam package --template-file template.yml --s3-bucket ${BUCKET_NAME} --output-template-file --region ${AWS_REGION} packaged.template.yml",
+        "package": "sam package --template-file template.yml --s3-bucket ${BUCKET_NAME} --output-template-file packaged.template.yml --region ${AWS_REGION}",
         "deploy": "sam deploy --template-file packaged.template.yml --stack-name dotlabs-proxy-app --capabilities CAPABILITY_IAM --parameter-overrides Stage=dev ProjectName=dotlabs-proxy-app authToken=authToken --no-fail-on-empty-changeset --region ${AWS_REGION}"
     },
     "jest": {

@@ -3,7 +3,9 @@
     <b-col>
       <b-form @submit.stop.prevent>
         <b-form-group
-          description="Start typing in and the search automatically start."
+          description="Start typing in and the search automatically start.
+          If the github request contains more than a thousand records,
+          github only allow pagination to the 1000. item."
         >
           <b-input-group class="mb-2">
             <b-input-group-prepend is-text>
@@ -35,7 +37,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Subscription } from 'rxjs';
 
 import SearchService from '@/service/searchService';
-import { SearchServiceMessage } from '@/search';
+import { SearchServiceMessage } from '@/types/search';
 
 @Component
 export default class SearchBar extends Vue {

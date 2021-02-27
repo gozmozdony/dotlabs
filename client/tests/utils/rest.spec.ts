@@ -6,7 +6,7 @@ import {
 } from '@/utils/rest';
 import { Subject } from 'rxjs';
 
-import { SearchServiceMessage } from '../../types/search';
+import { SearchServiceMessage } from '@/types/search';
 
 import Mock = jest.Mock;
 

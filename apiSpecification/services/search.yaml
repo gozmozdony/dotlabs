@@ -35,6 +35,18 @@ paths:
               examples:
                 Successful:
                   $ref: '#/components/examples/Response.Search'
+        206:
+          description: If the github request contains more than a thousand records, github only allow pagination to the 1000. item.
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/Response.Success'
+                  - $ref: '#/components/schemas/Response.Search'
+              examples:
+                Successful:
+                  $ref: '#/components/examples/Response.Search'
         400:
           description: The request did not adhere to the validation requirements.
           content:

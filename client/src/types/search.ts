@@ -13,7 +13,7 @@ export type SearchServiceMessage = {
   users: User[];
   count: number;
   loading: boolean;
-  message: string;
+  message: string | null;
   error: boolean;
 }
 

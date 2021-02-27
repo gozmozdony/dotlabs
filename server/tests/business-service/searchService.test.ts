@@ -3,7 +3,7 @@ import { Octokit } from "@octokit/rest";
 
 import SearchServiceFactory, {ISearchService} from "../../src/business-service/searchService";
 import { searchResultExample, userResultExample } from "../testData";
-import {dataResponseConverter} from "../../src/converters/dataConverter";
+import { dataResponseConverter } from "../../src/converters/dataConverter";
 
 describe('Search Business Service test', () => {
     let mockSearchFn: Mock;
@@ -45,29 +45,6 @@ describe('Search Business Service test', () => {
             expect(mockGetByUsernameFn).toBeCalledWith({username: queryParams.name});
             expect(result).toEqual({
                 totalCount: exampleData.total_count,
-                items: dataResponseConverter([userResultExample])
-            });
-        });
-
-        it('Should return with less totalCount when response exceedes a 1000', async () => {
-            const exampleData = {
-                total_count: 10000,
-                incomplete_results: false,
-                items: [
-                    searchResultExample
-                ]
-            };
-            const queryParams = { name: 'gozmozdony'};
-            mockSearchFn.mockResolvedValue({
-                data: exampleData
-            });
-            mockGetByUsernameFn.mockResolvedValue({ data: userResultExample });
-
-            const result = await service.searchByUsername(queryParams);
-            expect(mockSearchFn).toBeCalledWith({q: queryParams.name});
-            expect(mockGetByUsernameFn).toBeCalledWith({username: queryParams.name});
-            expect(result).toEqual({
-                totalCount: 1000,
                 items: dataResponseConverter([userResultExample])
             });
         });
