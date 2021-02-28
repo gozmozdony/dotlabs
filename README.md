@@ -66,7 +66,7 @@ Run in serve
 - Linter settings 
 - Authorization
 - Integration test
-- Gateway should not be configured as Proxy
+- Gateway should not be configured as Proxy, so the header configurations could be dropped
 ### FE
 - Workbox - GraphQl - Apollo caching?
 - State management, VueX?
