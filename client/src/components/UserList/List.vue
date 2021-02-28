@@ -49,7 +49,7 @@ export default class List extends Vue {
   subscription: Subscription | undefined;
 
   created() {
-    this.subscription = SearchService.observable().subscribe((message: any) => {
+    this.subscription = SearchService.observable().subscribe((message: SearchServiceMessage) => {
       if (message) {
         this.searchMessage = message;
       } else {

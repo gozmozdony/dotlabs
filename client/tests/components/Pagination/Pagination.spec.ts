@@ -1,17 +1,27 @@
+import Vue from 'vue';
+import vueDebounce from 'vue-debounce';
 import { mocked } from 'ts-jest/utils';
-import { BPagination } from 'bootstrap-vue';
+import {
+  BPagination, BCol, BInputGroup, BInputGroupPrepend, BFormInput, BRow, BFormInvalidFeedback,
+} from 'bootstrap-vue';
 import { shallowMount } from '@vue/test-utils';
 
 import Paginator from '@/components/Pagination/Paginator.vue';
-
+import SearchService from '@/service/searchService';
 import Mock = jest.Mock;
-import SearchService, { SearchServiceInterface } from "@/service/searchService";
 
+Vue.use(vueDebounce);
 jest.mock('@/service/searchService');
 
 describe('Paginator.vue', () => {
   const components = {
     BPagination,
+    BCol,
+    BInputGroup,
+    BInputGroupPrepend,
+    BFormInput,
+    BRow,
+    BFormInvalidFeedback,
   };
   let mockSubscribe: Mock;
   let mockSearchService: any;
@@ -43,7 +53,7 @@ describe('Paginator.vue', () => {
     expect(mockSearchService.observable).toBeCalled();
     expect(mockSearchService.paginate).toBeCalledWith(
       1,
-      5
+      5,
     );
   });
 });

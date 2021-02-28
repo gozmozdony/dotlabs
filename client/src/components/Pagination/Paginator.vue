@@ -23,8 +23,8 @@
       </b-form-invalid-feedback>
     </b-col>
     <b-col class="d-flex flex-column align-items-end">
-      <p class="mb-0">Total Count: {{ totalCount }}</p>
-      <p class="mb-0" v-if="message">{{ message }}</p>
+      <p class="mb-0 counter">Total Count: {{ totalCount }}</p>
+      <p class="mb-0 message" v-if="message">{{ message }}</p>
     </b-col>
   </b-row>
 </template>

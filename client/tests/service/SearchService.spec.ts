@@ -53,7 +53,7 @@ describe('Search service Factory', () => {
       const response = {
         items: [],
         totalCount: 0,
-        message: 'OK',
+        message: null,
         status: 200,
       };
       const generatedQuery = `name=${search}&page=1&perPage=${DEFAULT_PAGE_SIZE}`;

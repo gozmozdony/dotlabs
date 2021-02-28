@@ -24,8 +24,8 @@ export type SearchQueryParams = {
 }
 
 export type SearchAPIResponse = {
-  status: number,
-  message: string,
+  status: number;
+  message: string;
   totalCount: number;
   items: User[];
 }
