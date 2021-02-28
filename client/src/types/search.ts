@@ -7,6 +7,7 @@ export type User = {
   publicRepos: number;
   profilePic: string;
   url: string;
+  bio: string | null;
 }
 
 export type SearchServiceMessage = {

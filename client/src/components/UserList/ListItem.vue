@@ -9,7 +9,10 @@
           <b-col>
             <h5 class="mt-0 mb-1">{{ user.name }}</h5>
             <a class="mb-2" :href="user.url">{{ user.username }}</a>
-            <p class="mb-0 user_email" v-if="user.email">{{ user.email }}</p>
+            <p class="mb-0 user_email">{{ user.email || 'No public email address.' }}</p>
+            <p class="my-2 user_bio" v-if="user.bio">
+              {{ user.bio || 'User does not have any bio.' }}
+            </p>
           </b-col>
           <b-col>
             <p class="m-0 text-right user_following">

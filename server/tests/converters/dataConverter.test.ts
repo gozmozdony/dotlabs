@@ -14,6 +14,7 @@ describe('Data converters', () => {
                     publicRepos: userResultExample.public_repos,
                     profilePic: userResultExample.avatar_url,
                     url: userResultExample.html_url,
+                    bio: userResultExample.bio,
                 }
 
             ];

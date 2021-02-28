@@ -10,5 +10,6 @@ export const dataResponseConverter = (data: any[]): User[] => data.map((record) 
         profilePic: record.avatar_url,
         followers: record.followers,
         following: record.following,
+        bio: record.bio
     }
 })

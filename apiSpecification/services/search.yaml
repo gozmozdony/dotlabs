@@ -117,6 +117,7 @@ components:
           publicRepos: 1
           profilePic: 'https://avatars.githubusercontent.com/u/5528598?v=4'
           url: 'https://github.com/gozmozdony'
+          bio: 'Bio'
     Error400.InvalidRequestId:
       status: 400
       message: Bad Request
@@ -215,3 +216,6 @@ components:
                   url:
                     type: string
                     example: 'https://github.com/gozmozdony'
+                  bio:
+                    type: string
+                    example: 'Bio'

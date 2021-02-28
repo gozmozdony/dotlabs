@@ -5,7 +5,8 @@ Also it contains the required SAM templates to deploy.
 
 ## Why this approach
 In order to hide the api key from the client it is a good approach to use a proxy layer between github API and the constructed client.
-You can check the full architecture diagram in the dotlabs_architecture.drawio
+You can check the full architecture diagram in the repo: [dotlabs_architecture](https://github.com/gozmozdony/dotlabs/blob/main/dotlabs_architecture.png)
+
 
 ## API Specification
 To check the current API Specification run the following commands inside the apiSpecification folder.

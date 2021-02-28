@@ -57,7 +57,6 @@ const searchHandlerFactory = (
             });
         }
 
-        console.log(response.totalCount);
         if (response.totalCount > 1000) {
             return CORSHeaders({
                 statusCode: 206,

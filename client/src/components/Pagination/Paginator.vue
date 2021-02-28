@@ -2,8 +2,10 @@
   <b-row class="mb-4">
     <b-col>
       <b-pagination
+        role="search"
         v-model="currentPage"
         :total-rows="totalCount"
+        :per-page="perPage"
         v-on:change="change"
       ></b-pagination>
     </b-col>
@@ -16,7 +18,7 @@
           type="number"
           v-model="perPage"
           :state="validation"
-          v-debounce:500ms="change"></b-form-input>
+          v-debounce:500ms="changePerPage"></b-form-input>
       </b-input-group>
       <b-form-invalid-feedback :state="validation">
         The username must be at least 3 characters long.
@@ -55,22 +57,22 @@ export default class Paginator extends Vue {
       && this.perPage < 26;
   }
 
-  public change(page?: number) {
-    if (!this.validation) return;
-    this.currentPage = page || this.currentPage;
+  public change(page: number) {
+    this.currentPage = page;
     SearchService.paginate(this.currentPage, this.perPage);
   }
 
+  public changePerPage(perPage: number) {
+    if (!this.validation) return;
+    this.perPage = perPage;
+    SearchService.paginate(this.currentPage, perPage);
+  }
+
   private created() {
-    this.currentPage = SearchService.previousQueryParams.page || 1;
     this.subscription = SearchService.observable().subscribe((message: SearchServiceMessage) => {
-      if (message) {
-        this.totalCount = Number.isNaN(message.count) ? message.count : this.totalCount;
-        this.message = message.message;
-      } else {
-        this.currentPage = 1;
-        this.totalCount = 0;
-      }
+      if (!message || message.loading) return;
+      this.totalCount = message.count;
+      this.message = message.message;
     });
   }
 }

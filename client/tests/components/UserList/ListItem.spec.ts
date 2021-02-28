@@ -47,7 +47,7 @@ describe('User ListItem.vue', () => {
     );
   });
 
-  it('Should not render email when user does not have one', () => {
+  it('Should render email when user does not have one', () => {
     const wrapper = shallowMount(ListItem, {
       components,
       propsData: {
@@ -70,7 +70,7 @@ describe('User ListItem.vue', () => {
     expect(userImage.attributes('src')).toMatch(searchResultExample.profilePic);
     expect(userPageLink.text()).toMatch(searchResultExample.username);
     expect(userPageLink.attributes('href')).toMatch(searchResultExample.url);
-    expect(userEmail.exists()).toEqual(false);
+    expect(userEmail.text()).toMatch('No public email address.');
     expect(userFollowing.text()).toMatch(
       `Following ${searchResultExample.following.toString()}`,
     );
